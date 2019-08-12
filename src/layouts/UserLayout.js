@@ -11,73 +11,73 @@ import logo from '../assets/logo.svg';
 import getPageTitle from '@/utils/getPageTitle';
 
 const links = [
-  {
-    key: 'help',
-    title: formatMessage({ id: 'layout.user.link.help' }),
-    href: '',
-  },
-  {
-    key: 'privacy',
-    title: formatMessage({ id: 'layout.user.link.privacy' }),
-    href: '',
-  },
-  {
-    key: 'terms',
-    title: formatMessage({ id: 'layout.user.link.terms' }),
-    href: '',
-  },
+    {
+        key: 'help',
+        title: formatMessage({ id: 'layout.user.link.help' }),
+        href: '',
+    },
+    {
+        key: 'privacy',
+        title: formatMessage({ id: 'layout.user.link.privacy' }),
+        href: '',
+    },
+    {
+        key: 'terms',
+        title: formatMessage({ id: 'layout.user.link.terms' }),
+        href: '',
+    },
 ];
 
 const copyright = (
-  <Fragment>
-    Copyright <Icon type="copyright" /> 2019 蚂蚁金服体验技术部出品
-  </Fragment>
+    <Fragment>
+        Copyright <Icon type="copyright" /> 2019 蚂蚁金服体验技术部出品
+    </Fragment>
 );
 
 class UserLayout extends Component {
-  componentDidMount() {
-    const {
-      dispatch,
-      route: { routes, authority },
-    } = this.props;
-    dispatch({
-      type: 'menu/getMenuData',
-      payload: { routes, authority },
-    });
-  }
+    componentDidMount() {
+        const {
+            dispatch,
+            route: { routes, authority },
+        } = this.props;
+        dispatch({
+            type: 'menu/getMenuData',
+            payload: { routes, authority },
+        });
+    }
 
-  render() {
-    const {
-      children,
-      location: { pathname },
-      breadcrumbNameMap,
-    } = this.props;
-    return (
-      <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
-        <div className={styles.container}>
-          <div className={styles.lang}>
-            <SelectLang />
-          </div>
-          <div className={styles.content}>
-            <div className={styles.top}>
-              <div className={styles.header}>
-                <Link to="/">
-                  <img alt="logo" className={styles.logo} src={logo} />
-                  <span className={styles.title}>Ant Design</span>
-                </Link>
-              </div>
-              <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
-            </div>
-            {children}
-          </div>
-          <GlobalFooter links={links} copyright={copyright} />
-        </div>
-      </DocumentTitle>
-    );
-  }
+    render() {
+        const {
+            children,
+            location: { pathname },
+            breadcrumbNameMap,
+        } = this.props;
+        return (
+            <DocumentTitle title={getPageTitle(pathname, breadcrumbNameMap)}>
+                <div className={styles.container}>
+                    <div className={styles.lang}>
+                        <SelectLang />
+                    </div>
+                    <div className={styles.content}>
+                        <div className={styles.top}>
+                            <div className={styles.header}>
+                                <Link to="/">
+                                    <img alt="logo" className={styles.logo} src={logo} />
+                                    <span className={styles.title}>封神榜</span>
+                                </Link>
+                            </div>
+                            <div className={styles.desc}>不管你信不信，这是个很牛逼的东西</div>
+                        </div>
+                        {children}
+                    </div>
+                    <GlobalFooter links={links} copyright={copyright} />
+                </div>
+            </DocumentTitle>
+        );
+    }
 }
 
 export default connect(({ menu: menuModel }) => ({
-  menuData: menuModel.menuData,
-  breadcrumbNameMap: menuModel.breadcrumbNameMap,
+    menuData: menuModel.menuData,
+    breadcrumbNameMap: menuModel.breadcrumbNameMap,
 }))(UserLayout);

@@ -24,7 +24,26 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/av/actress/index', authority: ['admin', 'user'] },
+      {
+        path: '/av',
+        name: '影片库',
+        icon: 'video-camera',
+        routes: [
+          {
+            path: '/av/actress/index',
+            name: '演员列表',
+            icon: 'woman',
+            component: './Actress/List',
+          },
+          {
+            path: '/av/video/index',
+            name: '影片列表',
+            icon: 'play-square',
+            component: './Video/List',
+          },
+        ],
+      },
       {
         path: '/dashboard',
         name: 'dashboard',
