@@ -1,0 +1,14 @@
+.videoCardTitleView {
+    display: flex;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.videoCardTitleTxt {
+    color: #37a;
+}
+
+.videoCardScoreTxt {
+    color: #e09015;
+    margin-left: 8px;
+}

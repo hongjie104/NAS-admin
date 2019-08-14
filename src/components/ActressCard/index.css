@@ -1,3 +1,8 @@
 .cardAvatar {
     width: 175px;
 }
+
+.desContainer {
+    display: flex;
+    justify-content: space-between;
+}

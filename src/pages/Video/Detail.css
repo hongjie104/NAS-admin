@@ -1,0 +1,18 @@
+.videoCover {
+    width: 800px;
+}
+
+.detailContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.tag {
+    margin-top: 8px;
+}

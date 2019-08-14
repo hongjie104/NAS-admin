@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Row, List, Pagination, Card } from 'antd';
+import { Row, Col, List, Pagination, Card, Form, Input, Button, } from 'antd';
 import VideoCard from '@/components/VideoCard';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
+import styles from './List.less';
+
+const FormItem = Form.Item;
+
 @connect(({ video, loading }) => ({ video, loading: loading.models.list, }))
+@Form.create()
 class VideoList extends Component {
     state = {
         page: 1,
@@ -12,19 +17,18 @@ class VideoList extends Component {
 
     componentWillMount() {
         this.pageSize = 30;
+    }
+
+    componentDidMount() {
+        // console.log(this.props.form.setFieldsValue);
         const {
-            dispatch,
+            form: { setFieldsValue },
+            video: { formValue: { code, } },
         } = this.props;
-        const {
-            page,
-        } = this.state;
-        dispatch({
-            type: 'video/index',
-            payload: {
-                page,
-                pageSize: this.pageSize,
-            },
+        setFieldsValue({
+            code,
         });
+        this.handleSearch();
     }
 
     handleFormSubmit = value => {
@@ -33,54 +37,77 @@ class VideoList extends Component {
     };
 
     handlePageChange = page => {
-        const {
-            dispatch,
-        } = this.props;
-        dispatch({
-            type: 'video/index',
-            payload: {
-                page,
-                pageSize: this.pageSize,
-            },
-            callback: () => {
-                this.setState({
-                    page,
-                });
-            },
+        this.setState({
+            page,
+        }, () => {
+            this.handleSearch();
         });
-        // this.setState({ page };
     };
 
+    handleSearch = e => {
+        if (e) e.preventDefault();
+
+        const { dispatch, form } = this.props;
+        form.validateFields((err, fieldsValue) => {
+            if (err) return;
+            const {
+                page,
+            } = this.state;
+            dispatch({
+                type: 'video/index',
+                payload: {
+                    ...fieldsValue,
+                    page,
+                    pageSize: this.pageSize,
+                },
+            });
+        });
+    };
+
+    handleFormReset = () => {
+        const { form } = this.props;
+        form.resetFields();
+        this.handleSearch();
+    };
+
+    renderForm() {
+        const {
+            form: { getFieldDecorator },
+        } = this.props;
+        return (
+            <Form onSubmit={this.handleSearch} layout="inline" style={{ marginBottom: 24 }}>
+                <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+                    <Col span={12}>
+                        <FormItem label="名字">
+                            {getFieldDecorator('code')(<Input placeholder="请输入番号关键字" />)}
+                        </FormItem>
+                    </Col>
+                    {/* <Col span={12}>
+                        <FormItem label="排序方式">
+                            {getFieldDecorator('sortBy')(
+                                <Select placeholder="请选择" style={{ width: '100%' }}>
+                                    <Option value="score-desc">评分降序</Option>
+                                    <Option value="1">运行中</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+                    </Col> */}
+                    <Col span={12}>
+                        <Row type="flex" justify="end">
+                            <Button type="primary" htmlType="submit">
+                                查询
+                            </Button>
+                            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                                重置
+                            </Button>
+                        </Row>
+                    </Col>
+                </Row>
+            </Form>
+        );
+    }
+
     render() {
-        // const tabList = [
-        //   {
-        //     key: 'articles',
-        //     tab: '文章',
-        //   },
-        //   {
-        //     key: 'projects',
-        //     tab: '项目',
-        //   },
-        //   {
-        //     key: 'applications',
-        //     tab: '应用',
-        //   },
-        // ];
-
-        // const mainSearch = (
-        //   <div style={{ textAlign: 'center' }}>
-        //     <Input.Search
-        //       placeholder="请输入"
-        //       enterButton="搜索"
-        //       size="large"
-        //       onSearch={this.handleFormSubmit}
-        //       style={{ maxWidth: 522, width: '100%' }}
-        //     />
-        //   </div>
-        // );
-
-        // const { match, children, location } = this.props;
-
         const {
             video: { list, total, },
             loading,
@@ -89,12 +116,11 @@ class VideoList extends Component {
         return (
             <PageHeaderWrapper
                 title="影片列表"
-            // content={mainSearch}
-            // tabList={tabList}
-            // tabActiveKey={location.pathname.replace(`${match.path}/`, '')}
-            // onTabChange={this.handleTabChange}
             >
                 <Card bordered={false}>
+                    <div className={styles.tableList}>
+                        <div className={styles.tableListForm}>{this.renderForm()}</div>
+                    </div>
                     <List
                         rowKey="id"
                         loading={loading}
@@ -102,7 +128,7 @@ class VideoList extends Component {
                         dataSource={list}
                         renderItem={item => (
                             <List.Item key={item.id}>
-                                <VideoCard name={item.name} code={item.code} />
+                                <VideoCard videoData={item} />
                             </List.Item>
                         )}
                     />

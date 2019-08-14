@@ -1,50 +1,54 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, List, Pagination, Card, Form, Input, Button, Select, /* Icon */ } from 'antd';
-import ActressCard from '@/components/ActressCard';
+import { Row, Col, Divider, Card, Form, Input, Button, } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import Table from '@/components/Table';
 
 import styles from './List.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
-@connect(({ actress, loading }) => ({actress, loading: loading.models.list,}))
+@connect(({ series, loading }) => ({ series, loading: loading.models.list, }))
 @Form.create()
-class ActressList extends Component {
+class VideoList extends Component {
     state = {
         page: 1,
     };
 
+    columns = [
+        {
+            title: '名称',
+            dataIndex: 'name',
+            // render: text => <Link to={`/profile/basic/${text.replace(/\s+/gi, '-')}`}>{text}</Link>,
+        },
+        {
+            title: '操作',
+            width: '160px',
+            render: (text, record) => (
+                <Fragment>
+                    {/* <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a> */}
+                    <a>配置</a>
+                    <Divider type="vertical" />
+                    <a href="#">订阅警报</a>
+                </Fragment>
+            ),
+        },
+    ];
+
     componentWillMount() {
-        this.pageSize = 30;
+        this.pageSize = 20;
     }
 
     componentDidMount() {
         const {
             form: { setFieldsValue },
-            actress: { formValue: { name, sortBy, } },
+            series: { formValue: { name, } },
         } = this.props;
         setFieldsValue({
-            sortBy,
             name,
-        }, () => {
-            this.handleSearch();
         });
+        this.handleSearch();
     }
-
-    handleFormSubmit = value => {
-        // eslint-disable-next-line
-        console.log(value);
-    };
-
-    handlePageChange = page => {
-        this.setState({
-            page,
-        }, () => {
-            this.handleSearch();
-        });
-    };
 
     handleSearch = e => {
         if (e) e.preventDefault();
@@ -56,7 +60,7 @@ class ActressList extends Component {
                 page,
             } = this.state;
             dispatch({
-                type: 'actress/index',
+                type: 'series/index',
                 payload: {
                     ...fieldsValue,
                     page,
@@ -72,6 +76,14 @@ class ActressList extends Component {
         this.handleSearch();
     };
 
+    handleStandardTableChange = (pagination) => {
+        this.setState({
+            page: pagination.current,
+        }, () => {
+            this.handleSearch();
+        });
+    };
+
     renderForm() {
         const {
             form: { getFieldDecorator },
@@ -79,22 +91,12 @@ class ActressList extends Component {
         return (
             <Form onSubmit={this.handleSearch} layout="inline" style={{ marginBottom: 24 }}>
                 <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-                    <Col span={8}>
+                    <Col span={12}>
                         <FormItem label="名字">
-                            {getFieldDecorator('name')(<Input placeholder="请输入名字关键字" />)}
+                            {getFieldDecorator('name')(<Input placeholder="请输入系列关键字" />)}
                         </FormItem>
                     </Col>
-                    <Col span={8}>
-                        <FormItem label="排序方式">
-                            {getFieldDecorator('sortBy')(
-                                <Select placeholder="请选择" style={{ width: '100%' }}>
-                                    <Option value="score-desc">评分降序</Option>
-                                    <Option value="1">运行中</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                    </Col>
-                    <Col span={8}>
+                    <Col span={12}>
                         <Row type="flex" justify="end">
                             <Button type="primary" htmlType="submit">
                                 查询
@@ -111,46 +113,32 @@ class ActressList extends Component {
 
     render() {
         const {
-            actress: { list, total, },
+            series: { list, total, },
             loading,
         } = this.props;
-
         const {
             page,
         } = this.state;
 
         return (
             <PageHeaderWrapper
-                title="演员列表"
+                title="系列列表"
             >
                 <Card bordered={false}>
                     <div className={styles.tableList}>
                         <div className={styles.tableListForm}>{this.renderForm()}</div>
                     </div>
-                    <List
-                        rowKey="id"
+                    <Table
+                        selectedRows={[]}
                         loading={loading}
-                        grid={{ gutter: 8, lg: 6, md: 4, sm: 3, xs: 2 }}
-                        dataSource={list}
-                        renderItem={item => (
-                            <List.Item key={item.id}>
-                                <ActressCard actressData={item} />
-                            </List.Item>
-                        )}
+                        data={{ list, pagination: { current: page, pageSize: this.pageSize, total, }}}
+                        columns={this.columns}
+                        onChange={this.handleStandardTableChange}
                     />
-                    <Row type="flex" justify="end">
-                        <Pagination
-                            showQuickJumper
-                            total={total}
-                            pageSize={this.pageSize}
-                            onChange={this.handlePageChange}
-                            page={page}
-                        />
-                    </Row>
                 </Card>
             </PageHeaderWrapper>
         );
     }
 }
 
-export default ActressList;
+export default VideoList;

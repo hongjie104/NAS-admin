@@ -32,15 +32,29 @@ export default [
         routes: [
           {
             path: '/av/actress/index',
-            name: '演员列表',
+            name: '演员',
             icon: 'woman',
             component: './Actress/List',
           },
           {
+            path: '/av/actress/show/:id',
+            component: './Actress/Detail',
+          },
+          {
             path: '/av/video/index',
-            name: '影片列表',
+            name: '影片',
             icon: 'play-square',
             component: './Video/List',
+          },
+          {
+            path: '/av/video/show/:id',
+            component: './Video/Detail',
+          },
+          {
+            path: '/av/serise/index',
+            name: '系列',
+            icon: 'tag',
+            component: './Serise/List',
           },
         ],
       },
