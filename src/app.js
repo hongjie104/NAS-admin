@@ -1,11 +1,11 @@
 export const dva = {
-  config: {
-    onError(err) {
-      err.preventDefault();
+    config: {
+        onError(err) {
+            err.preventDefault();
+        },
     },
-  },
 };
 
 export function render(oldRender) {
-  oldRender();
+    oldRender();
 }
