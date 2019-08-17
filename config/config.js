@@ -117,7 +117,7 @@ export default {
   },
 
     history: 'hash',
-    publicPath: NODE_ENV !== 'production' ? '/' : '/beerMoneyAdmin/',
+    publicPath: NODE_ENV !== 'production' ? '/' : '/nasadmin/',
     runtimePublicPath: true,
 
   chainWebpack: webpackPlugin,
