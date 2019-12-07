@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card } from 'antd';
 import Link from 'umi/link';
 
-import { createVideoSmallCoverUrl } from '@/utils/utils';
+import { createVideoSmallCoverUrl, formatDate, } from '@/utils/utils';
 import styles from './index.css';
 
 export default class VideoCard extends Component {
@@ -10,6 +10,8 @@ export default class VideoCard extends Component {
         score: 0,
         code: '',
         id: '',
+        img: '',
+        date: '',
     };
 
     componentDidMount() {
@@ -18,6 +20,7 @@ export default class VideoCard extends Component {
         } = this.props;
         this.setState({
             ...videoData,
+            img: videoData.img_s,
         });
     }
 
@@ -26,13 +29,15 @@ export default class VideoCard extends Component {
             score,
             code,
             id,
+            img,
+            date,
         } = this.state;
         return (
             <Link to={`/av/video/show/${id}`}>
                 <Card
                     hoverable
                     className={styles.cardAvatar}
-                    cover={<img alt="example" src={createVideoSmallCoverUrl()} />}
+                    cover={<img alt="example" src={createVideoSmallCoverUrl(img)} />}
                 >
                     {/* <Card.Meta title={code} /> */}
                     <div className={styles.videoCardTitleView}>
@@ -42,6 +47,9 @@ export default class VideoCard extends Component {
                         <div className={styles.videoCardScoreTxt}>
                             {score}
                         </div>
+                    </div>
+                    <div className={styles.videoCardTitleView}>
+                        {formatDate(date)}
                     </div>
                 </Card>
             </Link>

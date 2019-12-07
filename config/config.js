@@ -82,7 +82,7 @@ export default {
     '/server/': {
       target: 'http://127.0.0.1:7001/',
       changeOrigin: true,
-      pathRewrite: { '^/server': '/api/v1' },
+      pathRewrite: { '^/server': '/api/admin' },
     },
   },
   ignoreMomentLocale: true,

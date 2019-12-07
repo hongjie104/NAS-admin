@@ -9,7 +9,7 @@ import { createActressAvatarUrl, formatDate } from '@/utils/utils';
 // import styles from './List.less';
 const { Description } = DescriptionList;
 
-@connect(({ actress, video, loading }) => ({ actress, video, loading: loading.models.list, }))
+@connect(({ actress }) => ({ actress }))
 class ActressDetail extends Component {
     state = {
         page: 1,
@@ -21,10 +21,15 @@ class ActressDetail extends Component {
 
     componentDidMount() {
         const { dispatch, match: { params: { id } } } = this.props;
+        const {
+            page,
+        } = this.state;
         dispatch({
             type: 'actress/show',
             payload: {
                 id,
+                videoPage: page,
+                videoPageSize: this.pageSize,
             },
         });
         this.handleSearch();
@@ -42,10 +47,10 @@ class ActressDetail extends Component {
         const { page } = this.state;
         const { dispatch, match: { params: { id } } } = this.props;
         dispatch({
-            type: 'video/index',
+            type: 'actress/indexVideo',
             payload: {
-                page,
-                pageSize: this.pageSize,
+                videoPage: page,
+                videoPageSize: this.pageSize,
                 actressId: id,
             },
         });
@@ -71,9 +76,7 @@ class ActressDetail extends Component {
         // const { profile, loading } = this.props;
         // const { advancedOperation1, advancedOperation2, advancedOperation3 } = profile;
         const {
-            actress: { detail },
-            video: { list, total },
-            loading,
+            actress: { detail, videoList, videoTotal, loading, },
         } = this.props;
         const {
             page,
@@ -83,7 +86,7 @@ class ActressDetail extends Component {
             <PageHeaderWrapper
                 title={detail.name}
                 logo={
-                    <img alt="" src={createActressAvatarUrl()} />
+                    <img alt="" src={createActressAvatarUrl(detail.img)} />
                 }
                 // extra={action}
                 content={this.renderDetail()}
@@ -95,7 +98,7 @@ class ActressDetail extends Component {
                         rowKey="id"
                         loading={loading}
                         grid={{ gutter: 8, lg: 6, md: 4, sm: 3, xs: 2 }}
-                        dataSource={list}
+                        dataSource={videoList}
                         renderItem={item => (
                             <List.Item key={item.id}>
                                 <VideoCard videoData={item} />
@@ -105,7 +108,7 @@ class ActressDetail extends Component {
                     <Row type="flex" justify="end">
                         <Pagination
                             showQuickJumper
-                            total={total}
+                            total={videoTotal}
                             pageSize={this.pageSize}
                             onChange={this.handlePageChange}
                             page={page}

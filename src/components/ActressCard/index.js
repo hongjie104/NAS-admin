@@ -11,6 +11,7 @@ export default class ActressCard extends Component {
         name: '',
         score: 0,
         birthday: '1970-01-01',
+        img: '',
     };
 
     componentDidMount() {
@@ -28,13 +29,14 @@ export default class ActressCard extends Component {
             name,
             score,
             birthday,
+            img,
         } = this.state;
         return (
             <Link to={`/av/actress/show/${id}`}>
                 <Card
                     hoverable
                     className={styles.cardAvatar}
-                    cover={<img alt="example" src={createActressAvatarUrl()} />}
+                    cover={<img alt="example" src={createActressAvatarUrl(img)} />}
                 >
                     <Card.Meta
                         title={name}

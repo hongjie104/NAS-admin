@@ -5,5 +5,5 @@ export async function index(page = 1, pageSize = 30, name = '', sortBy = '') {
 }
 
 export async function show(id) {
-    return get(`/server/actress/${id}`);
+    return get(`/server/actress/show/${id}`);
 }

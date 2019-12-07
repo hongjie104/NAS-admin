@@ -1,41 +1,38 @@
 import {
     index,
     show,
-} from '@/services/actress';
+} from '@/services/video';
 
 export default {
-    namespace: 'actress',
+    namespace: 'video',
     state: {
         list: [],
         total: 0,
-        detail: {
-            actress: null,
-            video: null,
-            total: 0,
-        },
+        detail: null,
+        actressList: [],
+        series: null,
+        categoryArr: [],
         formValue: {
-            name: '',
-            sortBy: 'score-desc',
+            code: '',
         },
     },
     effects: {
-        *index({ payload: { page, pageSize, name, sortBy }, callback = null }, { call, put }) {
-            const response = yield call(index, page, pageSize, name, sortBy);
+        *index({ payload: { page = 1, pageSize = 10, actressId = '', code = '' }, callback = null }, { call, put }) {
+            const response = yield call(index, page, pageSize, actressId, code);
             if (response.success) {
                 yield put({
                     type: 'setList',
                     payload: {
                         data: response.data,
                         formValue: {
-                            name,
-                            sortBy,
+                            code,
                         },
                     },
                 });
                 callback && callback();
             }
         },
-        *show({ payload: { id }, callback = null }, { call, put }) {
+        *show({ payload: { id }, callback }, { call, put }) {
             const response = yield call(show, id);
             if (response.success) {
                 yield put({
@@ -47,19 +44,22 @@ export default {
         },
     },
     reducers: {
-        setList(state, { payload: { data: { list, total }, formValue, } }) {
+        setList(state, { payload: { data: { list, pagination: { total, }, }, formValue, } }) {
             return {
                 ...state,
-                list: list || [],
+                list,
                 total,
                 formValue,
             };
         },
-        setDetail(state, { payload: { detail } }) {
+        setDetail(state, { payload }) {
             return {
                 ...state,
-                detail,
-            }
+                detail: payload.video,
+                actressList: Array.isArray(payload.actress) ? payload.actress : [],
+                series: payload.series,
+                categoryArr: payload.categoryArr,
+            };
         },
     },
 };

@@ -5,9 +5,9 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-    return get('/server//user/currentUser');
+    return get('/server/user/currentUser');
 }
 
 export async function login(params) {
-    return post('/server/login', params);
+    return post('/server/user/login', params);
 }

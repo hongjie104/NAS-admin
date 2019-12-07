@@ -1,3 +1,5 @@
+import { routerRedux } from 'dva/router';
+import { stringify } from 'qs';
 import { query as queryUsers, queryCurrent } from '@/services/user';
 
 export default {
@@ -18,10 +20,21 @@ export default {
         },
         *fetchCurrent(_, { call, put }) {
             const response = yield call(queryCurrent);
-            yield put({
-                type: 'saveCurrentUser',
-                payload: response.data,
-            });
+            if (response.success) {
+                yield put({
+                    type: 'saveCurrentUser',
+                    payload: response.data,
+                });
+            } else {
+                yield put(
+                    routerRedux.replace({
+                        pathname: '/user/login',
+                        search: stringify({
+                            redirect: window.location.href,
+                        }),
+                    })
+                );
+            }
         },
     },
 

@@ -5,5 +5,5 @@ export async function index(page, pageSize, actressId, code) {
 }
 
 export async function show(id) {
-    return get(`/server/video/${id}`);
+    return get(`/server/video/show/${id}`);
 }

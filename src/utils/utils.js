@@ -76,7 +76,7 @@ export function digitUppercase(n) {
 
 function getRelation(str1, str2) {
     if (str1 === str2) {
-    console.warn('Two path are equal!'); // eslint-disable-line
+        console.warn('Two path are equal!'); // eslint-disable-line
     }
     const arr1 = str1.split('/');
     const arr2 = str2.split('/');
@@ -93,7 +93,7 @@ function getRenderArr(routes) {
     let renderArr = [];
     renderArr.push(routes[0]);
     for (let i = 1; i < routes.length; i += 1) {
-    // 去重
+        // 去重
         renderArr = renderArr.filter(item => getRelation(item, routes[i]) !== 1);
         // 是否包含
         const isAdd = renderArr.every(item => getRelation(item, routes[i]) === 3);
@@ -214,12 +214,12 @@ export function getRandomColorName() {
     return colorArr[Math.floor(Math.random() * colorArr.length)];
 }
 
-export function createActressAvatarUrl() {
-    return 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
+export function createActressAvatarUrl(imgUrl) {
+    return process.env.NODE_ENV === 'production' ? imgUrl : 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
 }
 
-export function createVideoSmallCoverUrl() {
-    return 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
+export function createVideoSmallCoverUrl(imgUrl) {
+    return process.env.NODE_ENV === 'production' ? imgUrl : 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
 }
 
 export function createVideoCoverUrl() {

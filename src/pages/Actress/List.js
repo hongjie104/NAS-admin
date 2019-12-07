@@ -9,7 +9,7 @@ import styles from './List.less';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-@connect(({ actress, loading }) => ({actress, loading: loading.models.list,}))
+@connect(({ actress }) => ({ actress }))
 @Form.create()
 class ActressList extends Component {
     state = {
@@ -89,7 +89,6 @@ class ActressList extends Component {
                             {getFieldDecorator('sortBy')(
                                 <Select placeholder="请选择" style={{ width: '100%' }}>
                                     <Option value="score-desc">评分降序</Option>
-                                    <Option value="1">运行中</Option>
                                 </Select>
                             )}
                         </FormItem>
@@ -111,10 +110,8 @@ class ActressList extends Component {
 
     render() {
         const {
-            actress: { list, total, },
-            loading,
+            actress: { list, total, loading, },
         } = this.props;
-
         const {
             page,
         } = this.state;
