@@ -1,4 +1,5 @@
-import { index, show } from '@/services/actress';
+import { message } from 'antd';
+import { index, show, update } from '@/services/actress';
 import { index as indexVideo } from '@/services/video';
 
 export default {
@@ -14,6 +15,7 @@ export default {
             sortBy: 'score-desc',
         },
         loading: false,
+        submitting: false,
     },
     effects: {
         *index({ payload: { page, pageSize, name, sortBy }, callback = null }, { call, put }) {
@@ -36,26 +38,36 @@ export default {
                 callback && callback();
             }
         },
-        *show({ payload: { id, videoPage, videoPageSize, }, callback = null }, { call, put }) {
+        *show({ payload: { id }, callback = null }, { call, put }) {
             yield put({
                 type: 'setLoading',
                 payload: true,
             });
-            let response = yield call(show, id);
+            const response = yield call(show, id);
             if (response.success) {
-                const actressDetailData = response.data;
-                response = yield call(indexVideo, videoPage, videoPageSize, id);
-                if (response.success) {
-                    const videoIndexData = response.data;
-                    yield put({
-                        type: 'setDetail',
-                        payload: {
-                            actressDetailData,
-                            videoIndexData,
-                        },
-                    });
-                    callback && callback();
-                }
+                yield put({
+                    type: 'setDetail',
+                    payload: response.data,
+                });
+                callback && callback(response.data);
+            }
+        },
+        *update({ payload: { id, data }, callback = null }, { call, put }) {
+            yield put({
+                type: 'setSubmitting',
+                payload: true,
+            });
+            const response = yield call(update, id, data);
+            if (response.success) {
+                yield put({
+                    type: 'setDetail',
+                    payload: {
+                        ...data,
+                        id,
+                    },
+                });
+                message.success('更新成功');
+                callback && callback();
             }
         },
         *indexVideo({ payload: { actressId, videoPage, videoPageSize }, callback = null, }, { call, put }) {
@@ -80,6 +92,12 @@ export default {
                 loading: !!payload,
             };
         },
+        setSubmitting(state, { payload }) {
+            return {
+                ...state,
+                submitting: !!payload,
+            };
+        },
         setList(state, { payload: { data: { list, pagination: { total, }, }, formValue, } }) {
             return {
                 ...state,
@@ -89,13 +107,12 @@ export default {
                 loading: false,
             };
         },
-        setDetail(state, { payload: { actressDetailData, videoIndexData, } }) {
+        setDetail(state, { payload }) {
             return {
                 ...state,
-                detail: actressDetailData,
-                videoList: videoIndexData.list,
-                videoTotal: videoIndexData.pagination.total,
+                detail: payload,
                 loading: false,
+                submitting: false,
             }
         },
         setVideoList(state, { payload, }) {

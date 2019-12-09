@@ -47,7 +47,7 @@ export default {
         setList(state, { payload: { data: { list, pagination: { total, }, }, formValue, } }) {
             return {
                 ...state,
-                list,
+                list: list || [],
                 total,
                 formValue,
             };

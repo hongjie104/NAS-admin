@@ -78,7 +78,7 @@ class VideoList extends Component {
             <Form onSubmit={this.handleSearch} layout="inline" style={{ marginBottom: 24 }}>
                 <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                     <Col span={12}>
-                        <FormItem label="名字">
+                        <FormItem label="番号">
                             {getFieldDecorator('code')(<Input placeholder="请输入番号关键字" />)}
                         </FormItem>
                     </Col>

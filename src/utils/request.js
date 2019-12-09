@@ -87,3 +87,23 @@ export function post(url, data = {}) {
         data,
     });
 }
+
+export function deleteRequest(url, data = {}) {
+    return request(url, {
+        method: 'DELETE',
+        headers: {
+            Authorization: localStorage.getItem('token'),
+        },
+        data,
+    });
+}
+
+export function put(url, data = {}) {
+    return request(url, {
+        method: 'PUT',
+        headers: {
+            Authorization: localStorage.getItem('token'),
+        },
+        data,
+    });
+}
