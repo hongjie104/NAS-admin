@@ -12,10 +12,6 @@ const { Option } = Select;
 @connect(({ actress }) => ({ actress }))
 @Form.create()
 class ActressList extends Component {
-    state = {
-        page: 1,
-    };
-
     componentWillMount() {
         this.pageSize = 30;
     }
@@ -39,22 +35,15 @@ class ActressList extends Component {
     };
 
     handlePageChange = page => {
-        this.setState({
-            page,
-        }, () => {
-            this.handleSearch();
-        });
+        this.handleSearch(null, page);
     };
 
-    handleSearch = e => {
+    handleSearch = (e, page) => {
         if (e) e.preventDefault();
 
-        const { dispatch, form } = this.props;
+        const { dispatch, form, } = this.props;
         form.validateFields((err, fieldsValue) => {
             if (err) return;
-            const {
-                page,
-            } = this.state;
             dispatch({
                 type: 'actress/index',
                 payload: {
@@ -110,12 +99,8 @@ class ActressList extends Component {
 
     render() {
         const {
-            actress: { list, total, loading, },
+            actress: { list, total, loading, page, },
         } = this.props;
-        const {
-            page,
-        } = this.state;
-
         return (
             <PageHeaderWrapper
                 title="演员列表"
@@ -141,7 +126,7 @@ class ActressList extends Component {
                             total={total}
                             pageSize={this.pageSize}
                             onChange={this.handlePageChange}
-                            page={page}
+                            current={page}
                         />
                     </Row>
                 </Card>

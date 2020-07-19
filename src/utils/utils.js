@@ -215,15 +215,20 @@ export function getRandomColorName() {
 }
 
 export function createActressAvatarUrl(imgUrl) {
-    // return imgUrl;
-    return process.env.NODE_ENV === 'production' ? imgUrl : 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
+    return imgUrl;
+    // return process.env.NODE_ENV === 'production' ? imgUrl : 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
 }
 
 export function createVideoSmallCoverUrl(imgUrl) {
-    // return imgUrl;
-    return process.env.NODE_ENV === 'production' ? imgUrl : 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
+    return imgUrl;
+    // return process.env.NODE_ENV === 'production' ? imgUrl : 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
 }
 
 export function createVideoCoverUrl() {
     return 'http://hope3.pksen.com/gaitubao_FiWT18yJsnJ98EtVLaLvanixPjnh.jpg';
+}
+
+export function getAge(birthday) {
+    // return moment().subtract(moment(birthday)).duration().asYears();
+    return moment().diff(moment(birthday), 'years');
 }

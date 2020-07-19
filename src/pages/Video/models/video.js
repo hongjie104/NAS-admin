@@ -1,6 +1,8 @@
+import { message } from 'antd';
 import {
     index,
     show,
+    update,
 } from '@/services/video';
 
 export default {
@@ -15,6 +17,7 @@ export default {
         formValue: {
             code: '',
         },
+        submitting: false,
     },
     effects: {
         *index({ payload: { page = 1, pageSize = 10, actressId = '', code = '' }, callback = null }, { call, put }) {
@@ -39,11 +42,38 @@ export default {
                     type: 'setDetail',
                     payload: response.data,
                 });
+                callback && callback(response.data.video);
+            }
+        },
+        *update({ payload: { id, data }, callback = null }, { call, put }) {
+            yield put({
+                type: 'setSubmitting',
+                payload: true,
+            });
+            const response = yield call(update, id, data);
+            if (response.success) {
+                message.success('更新成功');
+                yield put({
+                    type: 'setSubmitting',
+                    payload: false,
+                });
                 callback && callback();
+            } else {
+                yield put({
+                    type: 'setSubmitting',
+                    payload: true,
+                });
+                message.error(response.msg);
             }
         },
     },
     reducers: {
+        setSubmitting(state, { payload }) {
+            return {
+                ...state,
+                submitting: !!payload,
+            };
+        },
         setList(state, { payload: { data: { list, pagination: { total, }, }, formValue, } }) {
             return {
                 ...state,
@@ -57,8 +87,8 @@ export default {
                 ...state,
                 detail: payload.video,
                 actressList: Array.isArray(payload.actress) ? payload.actress : [],
-                series: payload.series,
-                categoryArr: payload.categoryArr,
+                series: payload.series || [],
+                categoryArr: payload.categoryArr || [],
             };
         },
     },

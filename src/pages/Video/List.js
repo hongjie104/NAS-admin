@@ -31,11 +31,6 @@ class VideoList extends Component {
         this.handleSearch();
     }
 
-    handleFormSubmit = value => {
-        // eslint-disable-next-line
-        console.log(value);
-    };
-
     handlePageChange = page => {
         this.setState({
             page,

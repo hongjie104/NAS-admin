@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
 import Link from 'umi/link';
-import { createActressAvatarUrl } from '@/utils/utils';
+import { createActressAvatarUrl, getAge, } from '@/utils/utils';
+import { actressScoreCategory } from '@/config';
 
 import styles from './index.css';
 
@@ -27,7 +28,7 @@ export default class ActressCard extends Component {
         const {
             id,
             name,
-            score,
+            score = 0,
             birthday,
             img,
         } = this.state;
@@ -42,8 +43,8 @@ export default class ActressCard extends Component {
                         title={name}
                         description={
                             <div className={styles.desContainer}>
-                                <span>{score}</span>
-                                <span>{birthday}</span>
+                                <span>{actressScoreCategory.filter(s => s.value === score)[0].display}</span>
+                                <span>{getAge(birthday)}岁</span>
                             </div>
                         }
                     />

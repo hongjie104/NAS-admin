@@ -56,6 +56,10 @@ export default [
             icon: 'tag',
             component: './Serise/List',
           },
+          {
+            path: '/av/serise/videoList/:id',
+            component: './Serise/VideoList',
+          },
         ],
       },
       {

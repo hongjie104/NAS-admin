@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Divider, Card, Form, Input, Button, } from 'antd';
+import { Row, Col, Card, Form, Input, Button, } from 'antd';
+import Link from 'umi/link';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import Table from '@/components/Table';
 
@@ -19,19 +20,7 @@ class VideoList extends Component {
         {
             title: '名称',
             dataIndex: 'name',
-            // render: text => <Link to={`/profile/basic/${text.replace(/\s+/gi, '-')}`}>{text}</Link>,
-        },
-        {
-            title: '操作',
-            width: '160px',
-            render: (text, record) => (
-                <Fragment>
-                    {/* <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a> */}
-                    <a>配置</a>
-                    <Divider type="vertical" />
-                    <a href="#">订阅警报</a>
-                </Fragment>
-            ),
+            render: (text, record) => <Link to={`/av/serise/videoList/${record.id}`}>{text}</Link>,
         },
     ];
 

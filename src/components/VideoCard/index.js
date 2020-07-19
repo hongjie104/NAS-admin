@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card } from 'antd';
+import { Card, Tag, } from 'antd';
 import Link from 'umi/link';
 
 import { createVideoSmallCoverUrl, formatDate, } from '@/utils/utils';
@@ -12,6 +12,8 @@ export default class VideoCard extends Component {
         id: '',
         img: '',
         date: '',
+        subtitle: false,
+        hd: false,
     };
 
     componentDidMount() {
@@ -31,6 +33,8 @@ export default class VideoCard extends Component {
             id,
             img,
             date,
+            subtitle,
+            hd,
         } = this.state;
         return (
             <Link to={`/av/video/show/${id}`}>
@@ -50,6 +54,10 @@ export default class VideoCard extends Component {
                     </div>
                     <div className={styles.videoCardTitleView}>
                         {formatDate(date)}
+                    </div>
+                    <div>
+                        {subtitle && <Tag color="volcano">字幕</Tag>}
+                        {hd && <Tag color="geekblue">高清</Tag>}
                     </div>
                 </Card>
             </Link>

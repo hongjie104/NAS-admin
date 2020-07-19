@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Row, Col, List, Pagination, Card, Tabs, Form, Input, InputNumber, DatePicker, Button, } from 'antd';
+import { Row, Col, List, Pagination, Card, Tabs, Form, Input, InputNumber, DatePicker, Button, Select, } from 'antd';
 import VideoCard from '@/components/VideoCard';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import FooterToolbar from '@/components/FooterToolbar';
 import { createActressAvatarUrl } from '@/utils/utils';
+import { actressScoreCategory, } from '@/config';
 
 // import styles from './List.less';
 const { TabPane } = Tabs;
-// const { Option } = Select;
+const { Option } = Select;
 
 const fieldLabels = {
     name: '姓名',
@@ -20,6 +21,8 @@ const fieldLabels = {
     hip: '臀围',
     birthday: '生日',
     cup: '罩杯',
+    score: '评级',
+    img: '头像',
 };
 
 @connect(({ actress }) => ({ actress }))
@@ -55,6 +58,8 @@ class ActressDetail extends Component {
                     hip: detail.hip,
                     birthday: moment(detail.birthday),
                     cup: detail.cup,
+                    score: detail.score || 0,
+                    img: detail.img || '',
                 });
             },
         });
@@ -238,6 +243,30 @@ class ActressDetail extends Component {
                                         </Form.Item>
                                     </Col>
                                 </Row>
+                                <Row gutter={16}>
+                                    <Col span={6}>
+                                        <Form.Item label={fieldLabels.score}>
+                                            {getFieldDecorator('score', {
+                                                rules: [{ required: false, message: `请输入${fieldLabels.score}` }],
+                                            })(
+                                                <Select>
+                                                    {
+                                                        actressScoreCategory.map(s => <Option key={s.value} value={s.value}>{s.display}</Option>)
+                                                    }
+                                                </Select>
+                                            )}
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={6}>
+                                        <Form.Item label={fieldLabels.img}>
+                                            {getFieldDecorator('img', {
+                                                rules: [{ required: false, message: `请输入${fieldLabels.img}` }],
+                                            })(
+                                                <Input placeholder={`请输入${fieldLabels.img}`} />
+                                            )}
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
                             </Form>
                         </Card>
                         <FooterToolbar style={{ width }}>
@@ -265,7 +294,7 @@ class ActressDetail extends Component {
                                     total={videoTotal}
                                     pageSize={this.pageSize}
                                     onChange={this.handlePageChange}
-                                    page={page}
+                                    current={page}
                                 />
                             </Row>
                         </Card>
