@@ -2,6 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
+import { videoImagePrefix, videoCoverImagePrefix, actressImagePrefix } from "@/config";
 
 export function fixedZero(val) {
     return val * 1 < 10 ? `0${val}` : val;
@@ -215,17 +216,27 @@ export function getRandomColorName() {
 }
 
 export function createActressAvatarUrl(imgUrl) {
-    return imgUrl;
+    if (imgUrl.startsWith("http")) {
+        return imgUrl;
+    }
+    return `${actressImagePrefix}${imgUrl}`;
     // return process.env.NODE_ENV === 'production' ? imgUrl : 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
 }
 
 export function createVideoSmallCoverUrl(imgUrl) {
-    return imgUrl;
+    if (imgUrl.startsWith("http")) {
+        return imgUrl;
+    }
+    return `${videoImagePrefix}${imgUrl}`;
     // return process.env.NODE_ENV === 'production' ? imgUrl : 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
 }
 
-export function createVideoCoverUrl() {
-    return 'http://hope3.pksen.com/gaitubao_FiWT18yJsnJ98EtVLaLvanixPjnh.jpg';
+export function createVideoCoverUrl(imgUrl) {
+    if (imgUrl.startsWith('http')) {
+        return imgUrl;
+    }
+    return `${videoCoverImagePrefix}${imgUrl}`;
+    // return 'http://hope3.pksen.com/gaitubao_FiWT18yJsnJ98EtVLaLvanixPjnh.jpg';
 }
 
 export function getAge(birthday) {

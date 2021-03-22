@@ -1,3 +1,9 @@
+export const videoImagePrefix = "https://pics.javcdn.net/thumb/";
+
+export const videoCoverImagePrefix = "https://pics.javcdn.net/cover/";
+
+export const actressImagePrefix = "https://pics.javcdn.net/actress/";
+
 export const actressScoreCategory = [
     {
         display: '未评分',

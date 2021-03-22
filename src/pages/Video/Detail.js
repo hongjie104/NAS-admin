@@ -6,7 +6,7 @@ import ActressCard from '@/components/ActressCard';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import FooterToolbar from '@/components/FooterToolbar';
 import DescriptionList from '@/components/DescriptionList';
-import { formatDate, getRandomColorName, } from '@/utils/utils';
+import { formatDate, getRandomColorName, createVideoCoverUrl, } from '@/utils/utils';
 import { videoScoreCategory, } from '@/config';
 
 import styles from './Detail.css';
@@ -121,7 +121,7 @@ class VideoDetail extends Component {
                 content={this.renderDetail()}
             >
                 <Card bordered={false}>
-                    <img src={detail.img} className={styles.videoCover} alt={detail.code} />
+                    <img src={createVideoCoverUrl(detail.img)} className={styles.videoCover} alt={detail.code} />
                     <Divider orientation="left">影片信息</Divider>
                     <Form layout="vertical" hideRequiredMark>
                         <Row gutter={16}>
