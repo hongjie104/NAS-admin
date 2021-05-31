@@ -1,8 +1,11 @@
-export const videoImagePrefix = "https://pics.javcdn.net/thumb/";
+// export const videoImagePrefix = "https://pics.javcdn.net/thumb/";
+export const videoImagePrefix = "https://www.fanbus.blog/pics/thumb/";
 
-export const videoCoverImagePrefix = "https://pics.javcdn.net/cover/";
+// export const videoCoverImagePrefix = "https://pics.javcdn.net/cover/";
+export const videoCoverImagePrefix = "https://www.fanbus.blog/pics/cover/";
 
-export const actressImagePrefix = "https://pics.javcdn.net/actress/";
+// export const actressImagePrefix = "https://pics.javcdn.net/actress/";
+export const actressImagePrefix = "https://www.fanbus.blog/pics/actress/";
 
 export const actressScoreCategory = [
     {
@@ -37,15 +40,27 @@ export const videoScoreCategory = [
         value: 0,
     },
     {
-        display: '阅后即焚',
+        display: '不想下载',
         value: 1,
     },
     {
-        display: '值得收藏',
+        display: '还未观看',
         value: 2,
     },
     {
-        display: '永久收藏',
+        display: '阅后即焚',
         value: 3,
+    },
+    {
+        display: '值得收藏',
+        value: 4,
+    },
+    {
+        display: '永久收藏',
+        value: 5,
+    },
+    {
+        display: '想看未看',
+        value: 6,
     },
 ];

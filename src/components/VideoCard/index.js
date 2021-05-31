@@ -3,6 +3,7 @@ import { Card, Tag, } from 'antd';
 import Link from 'umi/link';
 
 import { createVideoSmallCoverUrl, formatDate, } from '@/utils/utils';
+import { videoScoreCategory } from '@/config';
 import styles from './index.css';
 
 export default class VideoCard extends Component {
@@ -48,16 +49,14 @@ export default class VideoCard extends Component {
                         <div className={styles.videoCardTitleTxt}>
                             {code}
                         </div>
-                        <div className={styles.videoCardScoreTxt}>
-                            {score}
-                        </div>
                     </div>
                     <div className={styles.videoCardTitleView}>
                         {formatDate(date)}
                     </div>
                     <div>
-                        {subtitle && <Tag color="volcano">字幕</Tag>}
-                        {hd && <Tag color="geekblue">高清</Tag>}
+                        <Tag color="green">{videoScoreCategory.filter(i => i.value === score)[0].display}</Tag>
+                        {/* {subtitle && <Tag color="volcano">字幕</Tag>}
+                        {hd && <Tag color="geekblue">高清</Tag>} */}
                     </div>
                 </Card>
             </Link>

@@ -1,7 +1,7 @@
 import { get, put } from '@/utils/request';
 
-export async function index(page, pageSize, actressId, code) {
-    return get(`/server/video?page=${page}&pageSize=${pageSize}&actressId=${actressId || ''}&code=${code || ''}`);
+export async function index(page, pageSize, actressId = '', code = '', sortBy = '') {
+    return get(`/server/video?page=${page}&pageSize=${pageSize}&actressId=${actressId}&code=${code}&sortBy=${sortBy}`);
 }
 
 export async function show(id) {

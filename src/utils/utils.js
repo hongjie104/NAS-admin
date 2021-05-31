@@ -216,26 +216,39 @@ export function getRandomColorName() {
 }
 
 export function createActressAvatarUrl(imgUrl) {
-    if (imgUrl.startsWith("http")) {
-        return imgUrl;
+    if (!imgUrl) return "http://hope3.pksen.com/null.png";
+    if (!imgUrl.startsWith("http")) {
+        imgUrl = `${actressImagePrefix}${imgUrl}`;
     }
-    return `${actressImagePrefix}${imgUrl}`;
+    if (imgUrl.indexOf('https://pics.dmm.co.jp') === -1) {
+        imgUrl = `https://images.weserv.nl/?url=${imgUrl}`;
+    }
+    return imgUrl;
     // return process.env.NODE_ENV === 'production' ? imgUrl : 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=969194526,1892037601&fm=26&gp=0.jpg';
 }
 
 export function createVideoSmallCoverUrl(imgUrl) {
-    if (imgUrl.startsWith("http")) {
-        return imgUrl;
+    if (!imgUrl) return "http://hope3.pksen.com/null.png";
+    if (!imgUrl.startsWith("http")) {
+        imgUrl = `${videoImagePrefix}${imgUrl}`;
     }
-    return `${videoImagePrefix}${imgUrl}`;
+    if (imgUrl.indexOf('https://pics.dmm.co.jp') === -1) {
+        imgUrl = `https://images.weserv.nl/?url=${imgUrl}`;
+    }
+    return imgUrl;
+
     // return process.env.NODE_ENV === 'production' ? imgUrl : 'http://hope3.pksen.com/gaitubao_FhE95-4X84MaQRgdCG0js7KM9sUv.jpg';
 }
 
 export function createVideoCoverUrl(imgUrl) {
-    if (imgUrl.startsWith('http')) {
-        return imgUrl;
+    if (!imgUrl) return "http://hope3.pksen.com/null.png";
+    if (!imgUrl.startsWith('http')) {
+        imgUrl = `${videoCoverImagePrefix}${imgUrl}`;
     }
-    return `${videoCoverImagePrefix}${imgUrl}`;
+    if (imgUrl.indexOf('https://pics.dmm.co.jp') === -1) {
+        imgUrl = `https://images.weserv.nl/?url=${imgUrl}`;
+    }
+    return imgUrl;
     // return 'http://hope3.pksen.com/gaitubao_FiWT18yJsnJ98EtVLaLvanixPjnh.jpg';
 }
 

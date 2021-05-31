@@ -1,59 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Row, Col, List, Pagination, Card, Form, Input, Button, } from 'antd';
+import { Row, Col, List, Pagination, Card, Form, Input, Button, Select, } from 'antd';
 import VideoCard from '@/components/VideoCard';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './List.less';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 @connect(({ video, loading }) => ({ video, loading: loading.models.list, }))
 @Form.create()
 class VideoList extends Component {
-    state = {
-        page: 1,
-    };
-
-    componentWillMount() {
-        this.pageSize = 30;
-    }
-
     componentDidMount() {
-        // console.log(this.props.form.setFieldsValue);
         const {
             form: { setFieldsValue },
-            video: { formValue: { code, } },
+            video: { formValue: { code, sortBy, page, pageSize, } },
         } = this.props;
         setFieldsValue({
-            code,
+            code, sortBy,
         });
-        this.handleSearch();
+        this.handleSearch(null, page, pageSize);
     }
 
-    handlePageChange = page => {
-        this.setState({
-            page,
-        }, () => {
-            this.handleSearch();
-        });
+    handlePageChange = (page, pageSize) => {
+        this.handleSearch(null, page, pageSize);
     };
 
-    handleSearch = e => {
+    handleSearch = (e, page, pageSize) => {
         if (e) e.preventDefault();
-
         const { dispatch, form } = this.props;
         form.validateFields((err, fieldsValue) => {
             if (err) return;
-            const {
-                page,
-            } = this.state;
             dispatch({
                 type: 'video/index',
                 payload: {
                     ...fieldsValue,
                     page,
-                    pageSize: this.pageSize,
+                    pageSize,
                 },
             });
         });
@@ -72,22 +56,22 @@ class VideoList extends Component {
         return (
             <Form onSubmit={this.handleSearch} layout="inline" style={{ marginBottom: 24 }}>
                 <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-                    <Col span={12}>
+                    <Col span={6}>
                         <FormItem label="番号">
                             {getFieldDecorator('code')(<Input placeholder="请输入番号关键字" />)}
                         </FormItem>
                     </Col>
-                    {/* <Col span={12}>
+                    <Col span={6}>
                         <FormItem label="排序方式">
                             {getFieldDecorator('sortBy')(
                                 <Select placeholder="请选择" style={{ width: '100%' }}>
+                                    <Option value="">上市日期</Option>
                                     <Option value="score-desc">评分降序</Option>
-                                    <Option value="1">运行中</Option>
                                 </Select>
                             )}
                         </FormItem>
-                    </Col> */}
-                    <Col span={12}>
+                    </Col>
+                    <Col span={6}>
                         <Row type="flex" justify="end">
                             <Button type="primary" htmlType="submit">
                                 查询
@@ -104,7 +88,7 @@ class VideoList extends Component {
 
     render() {
         const {
-            video: { list, total, },
+            video: { list, total, formValue: { pageSize, page, }, },
             loading,
         } = this.props;
 
@@ -131,7 +115,8 @@ class VideoList extends Component {
                         <Pagination
                             showQuickJumper
                             total={total}
-                            pageSize={this.pageSize}
+                            current={page}
+                            pageSize={pageSize}
                             onChange={this.handlePageChange}
                         />
                     </Row>

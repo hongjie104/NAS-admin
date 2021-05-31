@@ -16,19 +16,25 @@ export default {
         categoryArr: [],
         formValue: {
             code: '',
+            sortBy: '',
+            page: 1,
+            pageSize: 30,
         },
         submitting: false,
     },
     effects: {
-        *index({ payload: { page = 1, pageSize = 10, actressId = '', code = '' }, callback = null }, { call, put }) {
-            const response = yield call(index, page, pageSize, actressId, code);
+        *index({ payload: { page = 1, pageSize = 30, actressId = '', code = '', sortBy = '' }, callback = null }, { call, put }) {
+            const response = yield call(index, page, pageSize, actressId, code, sortBy);
             if (response.success) {
                 yield put({
                     type: 'setList',
                     payload: {
                         data: response.data,
                         formValue: {
+                            page,
+                            pageSize,
                             code,
+                            sortBy,
                         },
                     },
                 });
